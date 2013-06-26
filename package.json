@@ -11,14 +11,12 @@
     "jade": "*",
     "stylus": "*",
     "socket.io": "*",
-    "node-sass": "*",
+    "nodemon": "*",
     "mongoose": "*",
-    "nodemon":"*",
-    "connect-mongo": "latest",
+    "connect-mongo": "*",
     "async": "latest",
-    "view-helpers": "latest",
+    "view-helpers": "*",
     "connect-assets": "*",
-    "snockets": "*",
     "colors":"*"
   }
 }
