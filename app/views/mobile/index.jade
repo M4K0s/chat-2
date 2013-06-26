@@ -1,0 +1,34 @@
+doctype 5
+html
+	include head
+
+	body
+
+		#chat(data-role="page", data-theme="a", data-title="chat")
+
+			div(data-role="header")
+				b Чат
+				a.right(href="#auth", data-transition="flip", data-role="button", data-icon="star", data-iconpos="right", data-corners="true", data-shadow="true", data-iconshadow="true") Авторизация
+
+			div(data-role="content")
+				include chat
+
+			div(data-role="footer")
+				include footer
+
+		#auth(data-role="page", data-theme="a", data-title="auth")
+
+			div(data-role="header")
+				b Авторизация
+				a.right(href="#chat", data-transition="flip", data-role="button", data-icon="home", data-iconpos="right", data-corners="true", data-shadow="true", data-iconshadow="true") Чат
+
+			div(data-role="content")
+				.content
+					include auth
+
+			//-div(data-role="footer")
+				include footer
+
+			
+
+	include foot

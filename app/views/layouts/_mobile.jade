@@ -1,0 +1,27 @@
+doctype 5
+html
+	include ../includes/head_m
+
+	body
+
+		#main(data-role="page", data-theme="a")
+
+			div(data-role="header")
+				block header
+					include ../includes/header_m
+
+			div(data-role="content")
+				block content
+
+			div(data-role="footer")
+				block footer
+					include ../includes/footer_m
+
+		#auth(data-role="page", data-theme="a")
+
+			div(data-role="content")
+				p куку
+
+			
+
+	include ../includes/foot_m

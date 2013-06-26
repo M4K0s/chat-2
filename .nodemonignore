@@ -1,0 +1,5 @@
+# .nodemonignore file
+
+/node_modules/*
+/app/views/*
+/public/*

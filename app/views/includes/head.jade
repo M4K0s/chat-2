@@ -1,0 +1,21 @@
+head
+	meta(charset="utf-8")
+	meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+	meta(name="viewport", content="width=device-width,initial-scale=1")
+
+	title= appName+' - '+title
+	meta(http-equiv="Content-type", content="text/html;charset=UTF-8")
+	meta(name="keywords", content="")
+	meta(name="description", content="")
+
+	link(href="/favicon.ico", rel="shortcut icon", type="image/x-icon")
+
+	block css
+		link(rel='stylesheet', href='/bootstrap/css/bootstrap.css')
+		link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.css')
+		link(rel='stylesheet', href='/tinyscrollbar/tinyscrollbar.css')
+
+		!= css('main')
+
+	block js-top
+		

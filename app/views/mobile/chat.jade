@@ -1,0 +1,34 @@
+
+
+script(type="text/javascript", src="/socket.io/socket.io.js")
+
+!= js('chat')
+
+:coffeescript
+
+	window.chat = new Chat {
+
+		channel: 'test'
+		cid: 2
+		adminUid: 0
+		Auth: null
+		debug: 1
+
+	}
+	
+		
+
+#messages
+	.list
+		each item in messages
+			//-p #{comment.username} : #{comment.content}
+			.message
+				.avatar
+					img(src="#{item.avatar}", alt="")
+				.content #{item.content}
+
+
+#sendBlock
+	input.input(type="text", data-theme="d", placeholder="Введите текст")
+	input.btn(type="button", data-theme="a", value="Отпр.")
+

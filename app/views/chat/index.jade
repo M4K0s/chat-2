@@ -1,0 +1,51 @@
+extends ../layouts/default
+
+block content
+
+	.row-fluid
+		.span9
+			#messages
+				.scrollbar
+					.track
+						.thumb
+							.end
+				.viewport
+					.overview
+						.list
+							each item in messages
+								p #{item.username} : #{item.content}
+
+		.span3
+			#channels
+				.list
+			#usersOnline
+				.list
+
+
+	.row-fluid
+		#sendBlock
+			.input-append
+				input(type="text", placeholder="placeholder")
+				input(type="submit").btn Отправить
+
+
+
+
+block append js-bottom
+	script(type="text/javascript", src="/socket.io/socket.io.js")
+
+	!= js('chat')
+
+	script.
+
+		var chat = new Chat({
+
+			channel: 'test',
+			cid: 2,
+			adminUid: 0,
+			Auth: null,
+			debug: 1
+
+		});
+
+

@@ -1,0 +1,24 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.2.1",
+    "coffee-script": "*",
+    "jade": "*",
+    "stylus": "*",
+    "socket.io": "*",
+    "node-sass": "*",
+    "mongoose": "*",
+    "nodemon":"*",
+    "connect-mongo": "latest",
+    "async": "latest",
+    "view-helpers": "latest",
+    "connect-assets": "*",
+    "snockets": "*",
+    "colors":"*"
+  }
+}

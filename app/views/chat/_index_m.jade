@@ -1,0 +1,233 @@
+extends ../layouts/mobile
+
+
+block append js-top
+
+	script(type="text/javascript", src="/socket.io/socket.io.js")
+
+	!= js('chat')
+
+
+	:coffeescript
+
+		window.chat = new Chat {
+
+			channel: 'test'
+			cid: 2
+			adminUid: 0
+			Auth: {}
+			debug: 1
+
+		}
+
+		resize = ()->
+
+			$('#messages').height( window.innerHeight - $('div[data-role="header"]').height() - $('#sendBlock').height() - 14)
+
+			$content = $('#messages').find('.content')
+
+			$content.each ()->
+				console.log [$(@).width(), window.innerWidth]
+				if $(@).width() > window.innerWidth
+					$(@).width(window.innerWidth - 90)
+					$(@).addClass 'wrap'
+				else
+					###
+					if $(@).hasClass 'wrap'
+						$(@).removeAttr('style')
+						$(@).removeClass 'wrap'
+					###
+
+		$(window).resize ()-> resize()
+
+		$ ->
+			resize()
+			
+		
+
+block append css
+
+	:stylus
+
+		.ui-header
+
+			text-align: center
+
+		.ui-content
+
+			padding: 0 0 0 5px
+
+		
+		#messages 
+
+			height: 328px;
+			overflow-y: scroll;
+			overflow-x: hidden;
+
+			.list
+
+				.system
+
+					display: table
+					margin: 10px 0 10px 0
+
+				.message
+
+					display: table
+					margin: 10px 0 10px 0
+
+					.avatar
+
+						float: left
+
+						img
+
+							width: 40px
+							height: 40px
+
+							max-width: 100%
+							vertical-align: middle
+							border: 0
+
+							-webkit-border-radius: 6px
+							-moz-border-radius: 6px
+							border-radius: 6px
+
+					.content
+
+						float: left
+	
+						margin: 6px 0 0 12px
+
+						text-shadow: none
+
+						position: relative
+						padding: 6px 8px 6px 8px
+
+						color: #000
+						border-radius: 8px
+						-webkit-border-radius: 8px
+						-moz-border-radius: 8px
+
+						background: #FFF
+
+						&.wrap
+							word-wrap: break-word
+
+						&:after
+
+							content: ""
+							position: absolute
+							top: 9px
+							left: -6px
+
+							border-width: 6px 6px 6px 0
+							border-style: solid
+							border-color: rgba(0, 0, 0, 0) #FFF
+
+					
+
+
+
+		#sendBlock
+
+			padding: 5px
+			background: #111
+			height: 28px;
+
+			background-image: -webkit-gradient(linear, left top, left bottom, from( #3c3c3c ), to( #111 ))
+			background-image: -webkit-linear-gradient( #3c3c3c , #111 )
+			background-image: -moz-linear-gradient( #3c3c3c , #111 )
+			background-image: -ms-linear-gradient( #3c3c3c , #111 )
+			background-image: -o-linear-gradient( #3c3c3c , #111 )
+			background-image: linear-gradient( #3c3c3c , #111 )
+
+
+			.ui-input-text
+				width: 80%
+				height: 27px
+				float:left
+				border: 0
+				border-radius: 0
+				padding: 0
+				margin: 0
+
+				input.ui-input-text
+					padding: 0 10px
+					width: 100%
+
+			.ui-btn
+				float:left
+				width: 20%
+				height: 27px
+				border: 0
+				border-radius: 0
+				margin: 0
+
+				.ui-btn-inner
+					padding: 4px;
+
+
+block content
+
+	#messages
+		.list
+			each item in messages
+				//-p #{comment.username} : #{comment.content}
+				.message
+					.avatar
+						img(src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAYAAACuwEE+AAAErUlEQVR4Xu3YwStscRjG8d8QQnZEFkqyY6NE/n0rlOxkS1ZqrCiFe/udOtPcue6YJ889Gc93Vtz7eo/3eT/9zjl6/X7/V+FDAhMm0APMhElR1iQAGCBICQBGiotiwGBASgAwUlwUAwYDUgKAkeKiGDAYkBIAjBQXxYDBgJQAYKS4KAYMBqQEACPFRTFgMCAlABgpLooBgwEpAcBIcVEMGAxICQBGiotiwGBASgAwUlwUAwYDUgKAkeKiGDAYkBIAjBQXxYDBgJQAYKS4KAYMBqQEACPFRTFgMCAlABgpLooBgwEpAcBIcVEMGAxICQBGiotiwGBASgAwUlwUAwYDUgKAkeKiGDAYkBIAjBQXxYDBgJQAYKS4KAYMBqQEACPFRTFgMCAlABgpLooBgwEpAcBIcVEMGAxICQBGiotiwGBASgAwUlwUAwYDUgKAkeKiGDAYkBIAjBQXxYDBgJQAYKS4KAYMBqQEACPFRTFgMCAlABgpLooBgwEpgakH8/7+Xs7Ozsrz83M5OTkpi4uLfwRwd3dXbm5uyvr6etnf32/+r9/vl6urq1J/tn729vbKxsbGRMF1fb2JfqkOi6YazOvrazk9PS1vb2+l1+v9BaZd7tPT0wBM+zNLS0vl6OioXF5eNtjq13Nzc2Oj7/p6HTqY+FJTC2Z4eXXaj8BcX1+Xh4eHUmvX1taaE6Y9cba3t8vOzs7g+3rKzM/PNyfP8vJyA6j+/P39fXMCra6uDnC6rjfpqTbxNjsonGowFxcX5eDgYHBKDN+S2tvO1tZWub29/RRMC6ieOI+Pj+X4+Licn5+X9iSq6P7H9TrYsfUSUwumTeGjZ4r232ZmZsru7m5zarQnTHtqjJ4w7feT3naGn5m+cj3rNjto9iPBDN9K2tvMZ7ekFkzNvJ4y9YQaflAeB/Sr1+tgz7ZL/DgwCwsLzVtTfdAd/aysrJTNzc3mremjZ5j6TNHeyuoD8MvLy19vUKMn2levZ9tkR41+HJjR1+oWQHvCjHtLmp2dbbDVt67Dw8PmpKlfD79BffZarVzvs7eyjgxIl4kDM+7vMP96vhm+Nalgxl1P2tQ3KZ56MN8kx5hfAzAxq/YMChhPjjFdABOzas+ggPHkGNMFMDGr9gwKGE+OMV0AE7Nqz6CA8eQY0wUwMav2DAoYT44xXQATs2rPoIDx5BjTBTAxq/YMChhPjjFdABOzas+ggPHkGNMFMDGr9gwKGE+OMV0AE7Nqz6CA8eQY0wUwMav2DAoYT44xXQATs2rPoIDx5BjTBTAxq/YMChhPjjFdABOzas+ggPHkGNMFMDGr9gwKGE+OMV0AE7Nqz6CA8eQY0wUwMav2DAoYT44xXQATs2rPoIDx5BjTBTAxq/YMChhPjjFdABOzas+ggPHkGNMFMDGr9gwKGE+OMV0AE7Nqz6CA8eQY0wUwMav2DAoYT44xXQATs2rPoIDx5BjTBTAxq/YMChhPjjFdABOzas+ggPHkGNMFMDGr9gwKGE+OMV0AE7Nqz6CA8eQY0wUwMav2DAoYT44xXQATs2rPoIDx5BjTBTAxq/YMChhPjjFdABOzas+ggPHkGNMFMDGr9gz6G1HzSbXtC7t7AAAAAElFTkSuQmCC", alt="")
+					.content #{item.content}
+
+block footer
+
+	#sendBlock
+		input.input(type="text", data-theme="d")
+		input.btn(type="button", data-theme="a", value="Отпр.")
+
+
+
+
+
+//-
+	#foo(data-role="page", data-theme="a")
+
+		div(data-role="header")
+			h1 Page Title
+
+		div(data-role="content")
+			p	
+				a(data-role="button", data-theme="a", data-iconpos="right", data-icon="arrow-r", href="#bar") link
+
+			#messages
+				each comment in comments
+					p #{comment.username} : #{comment.content}
+
+
+		div(data-role="footer")
+			h4 Page Footer
+
+	#bar(data-role="page", data-theme="a")
+
+		div(data-role="header")
+			h1 Page Title
+
+		div(data-role="content")
+			p
+				a(data-role="button", data-theme="a", data-iconpos="left", data-icon="arrow-l", href="#foo") link
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+			p	Page content goes here.
+
+
+		div(data-role="footer")
+			h4 Page Footer
+
