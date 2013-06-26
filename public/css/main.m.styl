@@ -1,0 +1,171 @@
+//MIXins
+
+vendor(prop, args)
+	-webkit-{prop} args
+	   -moz-{prop} args
+	    -ms-{prop} args
+	     -o-{prop} args
+	        {prop} args
+
+border-radius()
+	vendor('border-radius', arguments)
+
+box-shadow()
+	vendor('box-shadow', arguments)
+
+transition()
+	vendor('transition', arguments)
+
+transform()
+	vendor('transform', arguments)
+
+transform-origin()
+	vendor('transform-origin', arguments)
+
+user-select()
+	vendor('user-select', arguments)
+
+background-linear-gradient(startPoint, startColor, startInterval, endColor, endInterval, deprecatedWebkitStartPoint = false, deprecatedWebkitEndPoint = false)
+	background-color startColor
+	if deprecatedWebkitStartPoint && deprecatedWebkitEndPoint
+		background-image -webkit-gradient(linear, deprecatedWebkitStartPoint, deprecatedWebkitEndPoint, color-stop(startInterval, startColor), color-stop(endInterval, endColor))
+	background-image -webkit-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+	background-image -moz-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+	background-image -ms-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+	background-image -o-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+	background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+
+
+.ui-body-a, .ui-overlay-a
+	//background-linear-gradient(bottom,rgb(82,82,82,90%),5%,rgb(139,139,143), 90%)
+
+
+.ui-btn-corner-all
+	border-radius(4px)
+
+
+.ui-header
+
+
+	padding: 10px 11px
+
+	b
+		//-
+
+	>.ui-btn.right
+		float: right
+		position:relative
+		margin-top: -11px;
+
+
+.ui-content
+
+	padding: 0
+
+	.content
+
+		padding: 0 5px 0 5px
+
+
+#messages 
+
+	height: 328px
+	overflow-y: scroll
+	overflow-x: hidden
+	margin-left: 5px
+
+	.list
+
+		.system
+
+			display: table
+			margin: 10px 0 10px 0
+
+		.message
+
+			display: table
+			margin: 10px 0 10px 0
+
+			.avatar
+
+				float: left
+
+				img
+
+					width: 40px
+					height: 40px
+
+					max-width: 100%
+					vertical-align: middle
+					border: 0
+
+					border-radius(6px)
+
+			.content
+
+				float: left
+
+				margin: 6px 0 0 12px
+
+				text-shadow: none
+
+				position: relative
+				padding: 6px 8px 6px 8px
+
+				color: #000
+
+				border-radius(8px)
+
+				background: #FFF
+
+				&.wrap
+					word-wrap: break-word
+
+				&:after
+
+					content: ""
+					position: absolute
+					top: 9px
+					left: -6px
+
+					border-width: 6px 6px 6px 0
+					border-style: solid
+					border-color: rgba(0, 0, 0, 0) #FFF
+
+			
+
+
+
+#sendBlock
+
+	padding: 5px
+	background: #111
+	height: 28px;
+
+	background-linear-gradient(bottom,#111,0,#3c3c3c, 100%)
+
+
+	.ui-input-text
+		width: 80%
+		height: 27px
+		float:left
+		border: 0
+		border-radius: 0
+		padding: 0
+		margin: 0
+
+		input.ui-input-text
+			padding: 0 10px
+			width: 96%
+
+	.ui-btn
+		float:left
+		width: 20%
+		height: 27px
+		border: 0
+		border-radius: 0
+		margin: 0
+
+		.ui-btn-inner
+			padding: 4px
+			border: 0
