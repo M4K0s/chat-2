@@ -10,10 +10,11 @@ colors 	= require 'colors'
 mongoose = require 'mongoose'
 fs 		= require('fs')
 
+env 		= process.env.NODE_ENV || 'development'
+
 config	= require('./config/config')[env]
 
 port 		= process.env.PORT || config.port
-env 		= process.env.NODE_ENV || 'development'
 
 
 passport = undefined
