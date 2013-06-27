@@ -21,6 +21,7 @@ passport = undefined
 
 colors.setTheme config.colors
 
+
 app = express()
 
 # models
@@ -36,6 +37,7 @@ require('./config/routes')(app, config, passport)
 
 
 #run server
+
 
 server = http.createServer app
 
@@ -65,5 +67,5 @@ db.once 'open', () -> console.log 'DB - connection success!'.db
 
 
 # expose app
-exports = module.exports = app
+#exports = module.exports = app
 
