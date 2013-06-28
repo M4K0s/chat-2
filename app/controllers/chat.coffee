@@ -31,10 +31,10 @@ module.exports = (app) ->
 
 				#console.log "DB - select : #{messages}".db
 
-			if req.route.path is '/m/chat'
-				res.render 'mobile/index',{messages:messages}
-			else
-				res.render 'chat/index',{messages:messages}
+				if req.route.path is '/m/chat'
+					res.render 'mobile/index',{messages:messages}
+				else
+					res.render 'chat/index',{messages:messages}
 
 		test: (req, res) ->
 
