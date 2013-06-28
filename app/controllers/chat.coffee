@@ -1,72 +1,57 @@
 
+colors 	= require 'colors'
 mongoose = require 'mongoose'
 async 	= require 'async'
 
-env 		= process.env.NODE_ENV || 'development'
-config	= require('../../config/config')[env]
-colors 	= require 'colors'
-colors.setTheme config.colors
-
-Messages = mongoose.model 'Messages'
-
-exports.index = (req, res) ->
-
-	###
-	silence = new Kitten {name: 'Silence'}
-
-	
-	rilence = new Kitten {name: 'Rilence'}
-
-	rilence.save (err) ->
-		if err then handleError err
-	###
-
-	###
-	query 	= Kitten.find {name: /ilence/i}
-	promise 	= query.exec()
-	promise.addBack (err, docs)->
-		console.log docs
-	###
+routes 	= require('../../config/routes')['controllers']['chat']
 
 
-	#Kitten.remove {name: 'Vins'},(err)->
-	#Kitten.remove {name: 'Silence'},(err)->
-
-	#Messages.create {username: 'Vins', content: 'Hello world!'},(err)->
-
-	#Messages.find {},(err,docs)->
-
-		#console.log docs
-
-	#Messages.remove {},(err)->
+module.exports = (app) ->
 
 
-	Messages.find {},(err,messages) ->
+	config = app.get('config')
+	constants = app.get('constants')
+	env = app.get('env')
 
-		#res.render '500' if err 
+	colors.setTheme constants.COLORS
 
-		res.send "#{err}".error if err 
+	Messages = mongoose.model 'Messages'
 
-		#console.log "DB - select : #{messages}".db
+	actions = 
 
-		if req.route.path is '/m/chat'
-			res.render 'mobile/index',{ messages: messages }
-		else
-			res.render 'chat/index',{ messages: messages }
+		index: (req,res) ->
+
+			messages = []
+
+			Messages.find {},(err,messages) ->
+
+				#res.render '500' if err 
+
+				res.send "#{err}".error if err 
+
+				#console.log "DB - select : #{messages}".db
+
+			if req.route.path is '/m/chat'
+				res.render 'mobile/index',{messages:messages}
+			else
+				res.render 'chat/index',{messages:messages}
+
+		test: (req, res) ->
+
+			Messages.remove {content:""},(err, result) ->
+
+				res.console "#{err}".error if err 
+
+				console.log "DB - delete : #{result}".db
+
+				res.send('done');
+
+
+	# ===== get Rotes! =====
+
+	for route in routes
+
+		app.get route.url, actions[route.action]
 
 	
-
-	#res.render 'chat/index',{}
-
-
-exports.test = (req, res) ->
-
-	Messages.remove {content:""},(err, result) ->
-
-		res.console "#{err}".error if err 
-
-		console.log "DB - delete : #{result}".db
-
-		res.send('done');
-
 

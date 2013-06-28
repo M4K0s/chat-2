@@ -1,12 +1,16 @@
 
+mongoose = require 'mongoose'
+async 	= require 'async'
+colors 	= require 'colors'
 
-module.exports = (io, config) ->
+module.exports = (app,io) ->
 
-	mongoose = require 'mongoose'
-	async 	= require 'async'
-	colors 	= require 'colors'
+	config = app.get('config')
+	constants = app.get('constants')
+	env = app.get('env')
 
-	colors.setTheme config.colors
+
+	colors.setTheme constants.COLORS
 
 	Messages = mongoose.model 'Messages'
 

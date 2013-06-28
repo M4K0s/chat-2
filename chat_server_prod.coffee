@@ -1,6 +1,5 @@
 
-app = require('./app')
+env = 'prod'
 
+app = require('./app')(env)
 
-# expose app
-exports = module.exports = app
