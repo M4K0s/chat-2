@@ -1,10 +1,12 @@
 
 # Module dependencies.
 
+env = process.env.NODE_ENV || 'development'
 
-mongoose 		= require 'mongoose'
-env 				= process.env.NODE_ENV || 'development'
-config 			= require('../../config/config')[env]
+config 		= require('../../config/config')[env]
+constants 	= require('../../config/constants')
+
+mongoose = require 'mongoose'
 
 Messages = new mongoose.Schema {
 

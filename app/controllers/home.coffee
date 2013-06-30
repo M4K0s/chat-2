@@ -1,14 +1,35 @@
 
-mongoose = require 'mongoose'
 
-env 		= process.env.NODE_ENV || 'development'
-config	= require('../../config/config')[env]
 colors 	= require 'colors'
-colors.setTheme config.colors
+mongoose = require 'mongoose'
+async 	= require 'async'
 
-exports.index = (req, res) ->
+routes 	= require('../../config/routes')['controllers']['home']
 
-	if req.route.path is '/m'
-		res.render 'home/index_m',{}
-	else
-		res.render 'home/index',{}
+module.exports = (app) -> 
+	
+	
+	config = app.get('config')
+	constants = app.get('constants')
+	env = app.get('env')
+
+	colors.setTheme constants.COLORS
+
+	actions = 
+
+		index: (req,res) ->
+
+			if req.route.path is '/m'
+				res.render 'home/index_m',{}
+			else
+				res.render 'home/index',{}
+
+
+	# ===== get Rotes! =====
+
+	for route in routes
+		
+		app.get route.url, actions[route.action]
+
+	
+

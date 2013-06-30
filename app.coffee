@@ -8,64 +8,65 @@ http 		= require 'http'
 io 		= require 'socket.io'
 colors 	= require 'colors'
 mongoose = require 'mongoose'
-fs 		= require('fs')
-
-env 		= process.env.NODE_ENV || 'development'
-
-config	= require('./config/config')[env]
-
-port 		= process.env.PORT || config.port
+fs 		= require 'fs'
 
 
-passport = undefined
+module.exports = (env) ->
 
-colors.setTheme config.colors
+	config		= require('./config/config')[env]
 
+	constants 	= require('./config/constants')
 
-app = express()
+	port 		= config.port
 
-# models
-modelsPath = __dirname + '/app/models'
-fs.readdirSync(modelsPath).forEach (file) ->
-	require modelsPath+'/'+file
+	colors.setTheme constants.COLORS
 
-# application settings
-require('./config/express')(app, config, passport)
+	app = express()
 
-# routes
-require('./config/routes')(app, config, passport)
+	app.set('env', env)
+	app.set('constants', constants)
+	app.set('config', config)
 
 
-#run server
+	# db
+
+	console.log config.db
+
+	mongoose.connect config.db
+	db = mongoose.connection
+	db.on 'error', () -> console.log 'DB - connection error!'.error
+	db.once 'open', () -> console.log 'DB - connection success!'.db
 
 
-server = http.createServer app
-
-server.listen port
-
-console.log "SERVER RUN - listening on port port #{port}".server
+	# application settings
+	require('./config/express')(app)
 
 
-#io
+	#### models
+	modelsPath = __dirname + '/app/models'
+	fs.readdirSync(modelsPath).forEach (file) ->
+		require modelsPath+'/'+file
 
-io = io.listen server
-
-ioPath = __dirname + '/app/io'
-fs.readdirSync(ioPath).forEach (file) =>
-	require(ioPath+'/'+file)(io, config)
-
-# db 
-
-mongoose.connect config.db
-
-db = mongoose.connection
-
-db.on 'error', () -> console.log 'DB - connection error!'.error
-
-db.once 'open', () -> console.log 'DB - connection success!'.db
+	#### controllers
+	controllersPath = __dirname + '/app/controllers'
+	fs.readdirSync(controllersPath).forEach (file) ->
+		require(controllersPath+'/'+file)(app)
 
 
+	#run server
 
-# expose app
-#exports = module.exports = app
 
+	server = http.createServer app
+
+	server.listen port
+
+	console.log "SERVER RUN - listening on port port #{port}".server
+
+
+	#io
+
+	io = io.listen server
+
+	ioPath = __dirname + '/app/io'
+	fs.readdirSync(ioPath).forEach (file) =>
+		require(ioPath+'/'+file)(app, io)

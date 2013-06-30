@@ -1,19 +1,38 @@
 
-# Module dependencies.
 
-module.exports = (app, config, passport) ->
 
-	home = require '../app/controllers/home'
+module.exports =
 
-	app.get '/', home.index
-	app.get '/m', home.index
+	controllers: 
 
-	chat = require '../app/controllers/chat'
+		home: [
+			{
+				url: '/'
+				action: 'index'
 
-	app.get '/chat', chat.index
-	app.get '/m/chat', chat.index
-	
-	app.get '/test', chat.test
+			},
+			{
+				url: '/m'
+				action: 'index'
+			}
+		],
+
+		chat: [
+			{
+				url: '/chat'
+				action: 'index'
+
+			},
+			{
+				url: '/m/chat'
+				action: 'index'
+
+			},
+			{
+				url: '/test'
+				action: 'test'
+			}
+		]
 
 
 
