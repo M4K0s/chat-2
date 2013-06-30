@@ -122,22 +122,24 @@ module.exports = (app,io) ->
 		# when the user disconnects.. perform this
 		socket.on 'disconnect', () =>
 
-			console.log """
-			USER DISCONNECTTED
-			uid: #{JSON.stringify(socket.user.id)}
+			if socket.user
 
-			""".io
+				console.log """
+				USER DISCONNECTTED
+				uid: #{JSON.stringify(socket.user.id)}
 
-			# remove the username from global usernames list
-			delete Chat.users[socket.user.id]
-			delete Chat.channels[socket.cid]
+				""".io
 
-			# update list of users in chat, client-side
-			io.sockets.emit('updateusers', Chat.users)
+				# remove the username from global usernames list
+				delete Chat.users[socket.user.id]
+				delete Chat.channels[socket.cid]
 
-			# echo globally that this client has left
-			socket.broadcast.emit('updatechat', 'SERVER', socket.user.name + ' has disconnected')
+				# update list of users in chat, client-side
+				io.sockets.emit('updateusers', Chat.users)
 
-			socket.leave(socket.channel)
-			socket.leave(socket.channelReactor)
-			socket.leave(socket.channelPrivate)
+				# echo globally that this client has left
+				socket.broadcast.emit('updatechat', 'SERVER', socket.user.name + ' has disconnected')
+
+				socket.leave(socket.channel)
+				socket.leave(socket.channelReactor)
+				socket.leave(socket.channelPrivate)

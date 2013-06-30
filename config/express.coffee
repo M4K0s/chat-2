@@ -16,17 +16,15 @@ module.exports = (app) ->
 
 	app.configure () ->
 
-		config = app.get('config')
-		constants = app.get('constants')
-		env = app.get('env')
+		config 		= app.get('config')
+		constants 	= app.get('constants')
+		env	 		= app.get('env')
 
-
-		app.set 'showStackError', true
 		app.use express.static(constants.ROOT + '/public')
-		app.use express.logger('dev')
 		app.set 'views', constants.ROOT + '/app/views'
 		app.set 'view engine', 'jade'
 
+		# assets
 		app.use assets(src: constants.ROOT + "/public")
 		
 		# dynamic helpers
@@ -39,28 +37,34 @@ module.exports = (app) ->
 		# cookieParser should be above session
 		app.use express.cookieParser()
 
-		
 		# routes should be at the last
 		app.use app.router
-		# use express favicon
 
+		# use express favicon
 		app.use express.favicon()
 
-		# error handler development only
-		if  env is 'dev' or env is 'master'
-			app.use express.errorHandler()
+		# production error handler
+		if env is 'prod' or env is 'master'
+
+			app.use (err, req, res, next) ->
+
+				console.error err.stack
+				res.status 500
+				res.render 'error', { error: err }
+
 
 		# custom error handler
-		###
-		app.use (err, req, res, next) ->
-			if ~err.message.indexOf('not found') then return next()
-			console.log err.stack
-			res.status(500).render('500')
-		###
+		# app.use (err, req, res, next) ->
+		# 		if ~err.message.indexOf('not found') then return next()
+		# 		console.log err.stack
+		# 		res.status(500).render('500')
 		
 
+		# 404 error handler
 		app.use (req, res, next) ->
-			res.status(404).render('404', { url: req.originalUrl })
+
+			res.status(404)
+			res.render '404', { url: req.originalUrl }
 	
 
  

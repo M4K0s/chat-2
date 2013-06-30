@@ -6,13 +6,9 @@ script(type="text/javascript", src="/socket.io/socket.io.js")
 
 :coffeescript
 
-	window.chat = new Chat {
+	window.Chat = new Chat {
 
-		channel: 'test'
-		cid: 2
-		adminUid: 0
-		Auth: null
-		debug: 1
+		socketURL: "http://#{window.location.host}/chat"
 
 	}
 	

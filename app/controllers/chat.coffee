@@ -5,9 +5,7 @@ async 	= require 'async'
 
 routes 	= require('../../config/routes')['controllers']['chat']
 
-
 module.exports = (app) ->
-
 
 	config = app.get('config')
 	constants = app.get('constants')
@@ -21,30 +19,39 @@ module.exports = (app) ->
 
 		index: (req,res) ->
 
-			messages = []
+			if !mongoose.connection.readyState
+				res.status 500
+				res.render 'error', { error: 'db connection error' }
 
-			Messages.find {},(err,messages) ->
+			else 
 
-				#res.render '500' if err 
+				Messages.find {},(err,messages) ->
 
-				res.send "#{err}".error if err 
+					#res.send "#{err}".error if err 
 
-				#console.log "DB - select : #{messages}".db
+					#console.log "DB - select : #{messages}".db
 
-				if req.route.path is '/m/chat'
-					res.render 'mobile/index',{messages:messages}
-				else
-					res.render 'chat/index',{messages:messages}
+					if req.route.path is '/m/chat'
+						res.render 'mobile/index',{messages:messages}
+					else
+						res.render 'chat/index',{messages:messages}
 
 		test: (req, res) ->
 
-			Messages.remove {content:""},(err, result) ->
+			if !mongoose.connection.readyState
+				res.status 500
+				res.render 'error', { error: 'db connection error' }
 
-				res.console "#{err}".error if err 
+			else 
 
-				console.log "DB - delete : #{result}".db
+				#Messages.remove {content:""},(err, result) ->
+				Messages.remove {},(err, result) ->
 
-				res.send('done');
+					res.console "#{err}".error if err 
+
+					console.log "DB - delete : #{result}".db
+
+					res.send("DB - delete: #{result}");
 
 
 	# ===== get Rotes! =====

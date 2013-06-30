@@ -14,29 +14,29 @@ class Node
 
 	constructor: (@socket = null) ->
 		
-	connect: (connectUrl = 'http://podgrib.com:9000/chat') -> 
+	connect: (socketURL) -> 
 
 		if typeof io is 'undefined' then return console.log 'ERROR::SERVER NOT RUN'
 
-		@socket = io.connect( connectUrl )
+		@socket = io.connect socketURL
 		
 	addUser:	(uid = Math.random(0, 100), username =  Math.random(0, 100)) ->	
 
 		@socket.emit 'adduser', uid, username
 
-	addChannel:	(cid=2, channel='test') ->	
+	addChannel:	(cid,channel) ->	
 
 		@socket.emit 'addchannel', cid, channel
 
 	addListeners: -> 
 
-		@socket.on 'updateusers', (data) -> chat.updateUsers(data)
+		@socket.on 'updateusers', (data) -> Chat.updateUsers(data)
 			
 		#listener, whenever the server emits 'updatechat', this updates the chat body
-		@socket.on 'updatechat', (username, data) -> chat.updateChat(username, data)
+		@socket.on 'updatechat', (username, data) -> Chat.updateChat(username, data)
 
 		#listener, whenever the server emits 'updatechannels', this updates the room the client is in
-		@socket.on 'updatechannels', (channels, currentChannel) -> chat.updateChannels(channels, currentChannel)
+		@socket.on 'updatechannels', (channels, currentChannel) -> Chat.updateChannels(channels, currentChannel)
 
 	addMessage: (data) ->
 
@@ -46,16 +46,17 @@ class Node
 
 class Chat
 
-	debug: 		true
-	channel:		'test'
-	cid: 			2
-	adminUid: 	1
-	Auth: 		null
-
-	vkApiID:		1906166
-	fbApiID:		279666928802339
 
 	constructor: (options) ->
+
+		@debug = true
+		@channel = 'test'
+		@cid = 2
+		@adminUid = 1
+		@Auth = null
+
+		@vkApiID = 1906166
+		@fbApiID = 279666928802339
 		
 		if options
 			for property of options
@@ -72,7 +73,7 @@ class Chat
 
 		@Node = new Node()
 
-		@Node.connect()
+		@Node.connect @socketURL
 		@Node.addChannel( @cid, @channel )
 		@Node.addListeners()
 
@@ -146,7 +147,6 @@ class Chat
 		@$messageInputField 	= @$sendBlock.find('input[type="text"]')
 		@$messageSendBtn 		= @$sendBlock.find('input[type="button"]')
 
-
 	bindElements: ->
 
 		console.log 'chat - bind elements'
@@ -210,8 +210,6 @@ class Chat
 		$('#focusable').focus()
 		$('#focusable').remove()
 
-
-
 	updateUsers: (data) ->
 
 		@$usersOnlineList.empty()
@@ -250,6 +248,14 @@ class Chat
 		#console.log data
 
 	loginInit: ->
+
+
+		if location.host.search('localhost') !=1
+
+			@loginUser 'test'
+
+			return
+
 
 		VK.init {apiId: @vkApiID}
 		FB.init {appId: @fbApiID, status: true, cookie: true,xfbml: true,oauth: true}
@@ -307,20 +313,21 @@ class Chat
 
 		VK.Api.call 'users.get', {uids: uid, fields: 'uid, first_name, photo, bdate, sex'}, (r) =>
 			if r.response					
-				@loginUser r.response[0], 'vk'
+				@loginUser 'vk', r.response[0]
 
 	loginFB: (uid) ->
 
 		FB.api '/'+ uid, (response)  =>
 			if response					
-				@loginUser response, 'fb'
+				@loginUser 'fb', response
 
-	loginUser: (data,type) ->
+	loginUser: (type,data=null) ->
 
-		console.log data
+		if data? then console.log data
 
-		if type is 'vk'
+		if type is 'vk' and data?
 
+			uid 			= data['uid']
 			avatar		= data['photo']
 			username 	= data['first_name']+' '+data['last_name']					
 			uidVK	 		= data['uid']
@@ -330,22 +337,28 @@ class Chat
 
 			sex	 		= data['sex']
 
-		if type is 'fb'
+		if type is 'fb' and data?
 
+			uid 		= data['id']
 			avatar	= "https://graph.facebook.com/#{data['id']}/picture"
 			username = data['first_name'] + ' ' + data['last_name']				
 			uidFB	 	= data['id']
 			sex	 	= data['gender']
 			bdate		= ""
 
+		if type is 'test'
 
-		@Auth = {
+			uid = 1
+			username = 'testUsername'
+			avatar = 'testAvatar'
 
-			uid: uidVK
+
+		@Auth = 
+
+			uid: uid
 			username: username
 			avatar: avatar
-		}
-
+		
 		@Node.addUser @Auth
 
 		$.mobile.changePage '#chat'

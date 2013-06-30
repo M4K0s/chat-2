@@ -29,7 +29,7 @@ module.exports =
 
 			},
 			{
-				url: '/test'
+				url: '/m/chat/test'
 				action: 'test'
 			}
 		]

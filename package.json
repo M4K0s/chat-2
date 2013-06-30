@@ -8,15 +8,17 @@
   "dependencies": {
     "express": "3.2.1",
     "coffee-script": "latest",
-    "jade": "*",
-    "stylus": "*",
-    "socket.io": "*",
-    "nodemon": "*",
-    "mongoose": "*",
-    "connect-mongo": "*",
+    "jade": "latest",
+    "stylus": "latest",
+    "socket.io": "latest",
+    "nodemon": "latest",
+    "mongoose": "latest",
+    "connect-mongo": "latest",
     "async": "latest",
-    "view-helpers": "*",
-    "connect-assets": "*",
-    "colors":"*"
+    "view-helpers": "latest",
+    "connect-assets": "latest",
+    "colors":"latest",
+    "passport": "latest",
+    "path":"latest"
   }
 }
