@@ -24,40 +24,47 @@
 
 project="chat"
 
-
-C:/mongodb/bin/mongod.exe --dbpath "C:\mongodb\data"
-
-
 case "$1" in
 
-   'prod')
+ 	'prod')
 
-       echo "======== Prod server start =========="
+		echo "======== Prod server start =========="
+		nodemon --debug ${project}_server_prod.coffee
+		
+	 ;;
 
-       nodemon ${project}_server_prod.coffee
-      
-   ;;
+	'dev')
 
-   'dev')
+		echo "======== Dev server start ==========="
+		nodemon --debug ${project}_server_dev.coffee
+	;;
 
-       echo "======== Dev server start ==========="
+	'master')
 
-       nodemon ${project}_server_dev.coffee
-   ;;
+		echo "======== Master server start ========"
+		nodemon --debug ${project}_server_master.coffee
+	;;
 
-   'master')
+	'db')
+		rm C:/mongodb/data/mongod.lock
+		C:/mongodb/bin/mongod --dbpath C:/mongodb/data --repair
+		C:/mongodb/bin/mongod --dbpath C:/mongodb/data &
+		exit 0
+	;;
 
-       echo "======== Master server debug ========"
+	*)
+		echo "====================================="
+		echo "Usage: $0 [prod|master|dev] or [db] if need database"
+		echo "====================================="
+	;;
 
-       nodemon ${project}_server_master.coffee
-   ;;
-
-   *)
-       echo "Usage: $0 debug [prod|master|dev]"
-   ;;
 esac
 
 
 echo
 exit 0
+
+
+
+
 

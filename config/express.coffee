@@ -43,6 +43,9 @@ module.exports = (app) ->
 		# use express favicon
 		app.use express.favicon()
 
+		# use express logger
+		app.use express.logger('dev')
+
 		# production error handler
 		if env is 'prod' or env is 'master'
 

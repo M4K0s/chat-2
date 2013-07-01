@@ -14,10 +14,8 @@ fs 		= require 'fs'
 module.exports = (env) ->
 
 	config		= require('./config/config')[env]
-
 	constants 	= require('./config/constants')
-
-	port 		= config.port
+	port 			= config.port
 
 	colors.setTheme constants.COLORS
 
@@ -45,27 +43,18 @@ module.exports = (env) ->
 	#run server
 
 	server = http.createServer app
-
 	server.listen port
-
 	console.log "Server #{env} is running - listening on port port #{port}".server
 
 
 	#run io
-
 	io = io.listen server
-
 	ioPath = __dirname + '/app/io'
 	fs.readdirSync(ioPath).forEach (file) =>
 		require(ioPath+'/'+file)(app, io)
 
-		console.log "------>" + file
-		#for route in require('../../config/routes')['controllers']['chat']
-			#app.get route.url, actions[route.action]
-
 
 	# db
-
 	mongoose.connect config.db
 	db = mongoose.connection
 
