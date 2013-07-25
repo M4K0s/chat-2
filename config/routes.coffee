@@ -14,7 +14,8 @@ module.exports =
 			{
 				url: '/m'
 				action: 'index'
-			}
+			},
+	
 		],
 
 		chat: [

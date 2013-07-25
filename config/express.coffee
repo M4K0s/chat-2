@@ -3,13 +3,15 @@
 
 express     	= require 'express'
 helpers     	= require 'view-helpers'
-CoffeeScript 	= require 'coffee-script'
+coffeeScript 	= require 'coffee-script'
 stylus			= require 'stylus'
 assets			= require 'connect-assets'
+passport		= require 'passport'
+FacebookStrategy = require('passport-facebook').Strategy
 
 # BARE for coffe script!
 assets.jsCompilers.coffee.compileSync = (sourcePath, source) ->
-	CoffeeScript.compile source, {filename: sourcePath, bare: true}
+	coffeeScript.compile source, {filename: sourcePath, bare: true}
 
 
 module.exports = (app) ->
@@ -19,6 +21,7 @@ module.exports = (app) ->
 		config 		= app.get('config')
 		constants 	= app.get('constants')
 		env	 		= app.get('env')
+		port 		= config.port
 
 		app.use express.static(constants.ROOT + '/public')
 		app.set 'views', constants.ROOT + '/app/views'
@@ -68,6 +71,25 @@ module.exports = (app) ->
 
 			res.status(404)
 			res.render '404', { url: req.originalUrl }
-	
 
- 
+
+		#Auth
+		app.use passport.initialize()
+		app.use passport.session()
+
+
+		#FB Auth
+		passport.use(new FacebookStrategy(
+			{
+				clientID: '111'
+				clientSecret: '222'
+				callbackURL: "http://localhost:#{port}/auth/facebook/callback"
+			},
+			(accessToken, refreshToken, profile, done) ->
+
+				console.log profile.id
+
+				#User.findOrCreate { facebookId: profile.id }, (err, user) ->
+					#done err, user
+		))
+

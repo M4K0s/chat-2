@@ -39,7 +39,7 @@ module.exports = (app,io) ->
 
 			Chat.users[socket.user.id] = {uid: socket.user.id, username: socket.user.name, avatar: socket.user.avatar, channel: channel, channelPrivate: socket.channelPrivate}
 
-			console.log """
+			console.log """   
 			ADD USER
 			#{JSON.stringify(Chat.users)}
 
@@ -75,7 +75,7 @@ module.exports = (app,io) ->
 			socket.join( socket.channelReactor )
 
 			console.log """
-			ADD CHANNEL
+			ADD CHANNEL   
 			#{JSON.stringify(Chat.channels)}
 
 			""".io
@@ -97,8 +97,8 @@ module.exports = (app,io) ->
 			
 			Messages.create req,(err)->
 
-				console.log "DB - insert : #{err}".error if err
-				console.log "DB - insert : #{JSON.stringify(req)}".db
+				console.log "   DB - insert : #{err}".error if err
+				console.log "   DB - insert : #{JSON.stringify(req)}".db
 
 				Chat.in(socket.channel).emit('updatechat','USER', req)
 			
@@ -124,7 +124,7 @@ module.exports = (app,io) ->
 
 			if socket.user
 
-				console.log """
+				console.log """   
 				USER DISCONNECTTED
 				uid: #{JSON.stringify(socket.user.id)}
 

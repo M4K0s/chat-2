@@ -5,18 +5,18 @@ module.exports = {
 	COLORS: {
 		silly:	'rainbow'
 		input:	'grey'
-		verbose:	'cyan'
+		verbose:'cyan'
 		prompt:	'grey' 
-		info:		'cyan'
+		info:	'cyan'
 		data: 	'grey'
 		help: 	'cyan'
 		warn: 	'yellow'
 		debug: 	'blue'
 		error: 	'red'
 
-		db: 		'yellow'
+		db: 	'yellow'
 		io:		'cyan'
-		server: 	'green'
+		server: 'green'
 	}
 
 }

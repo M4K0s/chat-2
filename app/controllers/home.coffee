@@ -4,8 +4,6 @@ colors 	= require 'colors'
 mongoose = require 'mongoose'
 async 	= require 'async'
 
-routes 	= require('../../config/routes')['controllers']['home']
-
 module.exports = (app) -> 
 	
 	
@@ -24,12 +22,4 @@ module.exports = (app) ->
 			else
 				res.render 'home/index',{}
 
-
-	# ===== get Rotes! =====
-
-	for route in routes
-		
-		app.get route.url, actions[route.action]
-
-	
 

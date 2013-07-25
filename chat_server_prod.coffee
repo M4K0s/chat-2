@@ -1,4 +1,5 @@
 
 env = 'prod'
+port = 9000
 
-app = require('./app')(env)
+require('./app')(env,port)

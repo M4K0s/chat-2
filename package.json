@@ -19,6 +19,8 @@
     "connect-assets": "latest",
     "colors":"latest",
     "passport": "latest",
-    "path":"latest"
+    "path":"latest",
+    "passport":"latest",
+    "passport-facebook":"latest"
   }
 }

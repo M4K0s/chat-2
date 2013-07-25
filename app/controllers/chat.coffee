@@ -3,7 +3,6 @@ colors 	= require 'colors'
 mongoose = require 'mongoose'
 async 	= require 'async'
 
-routes 	= require('../../config/routes')['controllers']['chat']
 
 module.exports = (app) ->
 
@@ -53,12 +52,4 @@ module.exports = (app) ->
 
 					res.send("DB - delete: #{result}");
 
-
-	# ===== get Rotes! =====
-
-	for route in routes
-
-		app.get route.url, actions[route.action]
-
-	
 
